@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Двигающаяся Рожица</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background: linear-gradient(135deg, #f06, #4c6ef5); /* Интересный фон */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        #smiley {
+            position: absolute;
+            cursor: pointer;
+            width: 100px; /* Размер рожицы */
+            height: 100px;
+            transition: transform 0.2s ease; /* Плавное изменение положения */
+        }
+
+        .firework {
+            position: absolute;
+            border-radius: 50%;
+            background-color: #ff0;
+            opacity: 1;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        @keyframes fireworkAnimation {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(3);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(0);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <img id="smiley" src="https://i.imgur.com/7lD1yLK.png" alt="smiley"> <!-- Замените URL на картинку с кривой рожицей -->
+    <script>
+        let leftOffset = 0; // Смещение по горизонтали
+        let topOffset = 0;  // Смещение по вертикали
+        let direction = "right"; // Текущее направление движения
+        let intervalId; // Переменная для хранения ID интервала
+        let isMoving = false; // Флаг для отслеживания состояния анимации
+        let clickCount = 0; // Счетчик кликов
+        let level = 1; // Уровень сложности
+        const clicksPerLevel = 20; // Количество кликов для каждого уровня
+
+        // Функция для анимации салюта
+        function createFirework(x, y) {
+            const firework = $("<div class='firework'></div>").appendTo("body");
+            const size = Math.random() * 30 + 20; // Размер фейерверка
+            firework.css({
+                left: x - size / 2,
+                top: y - size / 2,
+                width: size + "px",
+                height: size + "px",
+                animation: "fireworkAnimation 1s ease-out forwards"
+            });
+
+            // Удаляем элемент после завершения анимации
+            setTimeout(() => firework.remove(), 1000);
+        }
+
+        // Функция для обновления позиции
+        let moveSmiley = function () {
+            if (direction === "right") {
+                leftOffset += 2; // Движение вправо
+                if (leftOffset >= 350) {
+                    direction = "down"; // Смена направления на "вниз"
+                }
+            } else if (direction === "down") {
+                topOffset += 2; // Движение вниз
+                if (topOffset >= 350) {
+                    direction = "left"; // Смена направления на "влево"
+                }
+            } else if (direction === "left") {
+                leftOffset -= 2; // Движение влево
+                if (leftOffset <= 0) {
+                    direction = "up"; // Смена направления на "вверх"
+                }
+            } else if (direction === "up") {
+                topOffset -= 2; // Движение вверх
+                if (topOffset <= 0) {
+                    direction = "right"; // Смена направления на "вправо"
+                }
+            }
+
+            // Обновляем позицию рожицы
+            $("#smiley").offset({ left: leftOffset + (window.innerWidth - 300) / 2, top: topOffset + (window.innerHeight - 300) / 2 });
+        };
+
+        // Обработчик клика по рожице
+        $("#smiley").click(function() {
+            clickCount++; // Увеличиваем счетчик кликов
+
+            // Увеличиваем скорость анимации, уменьшая интервал
+            let newInterval = Math.max(30 - (clickCount * 2), 10); // Минимальный интервал 15 для первого уровня
+
+            // Если анимация уже запущена, сбрасываем текущий интервал и запускаем новый
+            if (isMoving) {
+                clearInterval(intervalId);
+                intervalId = setInterval(moveSmiley, newInterval);
+            } else {
+                // Если анимация не запущена, то запускаем ее
+                intervalId = setInterval(moveSmiley, newInterval);
+                isMoving = true;
+            }
+
+            // Обновляем текст с количеством кликов
+            $("#smiley").attr("alt", "Клики: " + clickCount);
+
+            // Если количество кликов достигает 20, увеличиваем скорость анимации
+            if (clickCount >= level * clicksPerLevel) {
+                level++; // Переход на следующий уровень
+                $("#smiley").attr("alt", "Уровень " + level + " (клики: " + clickCount + ")");
+            }
+
+            // Если достигнут третий уровень и 60 кликов, останавливаем игру
+            if (clickCount >= 60) {
+                clearInterval(intervalId); // Останавливаем анимацию
+                $("#smiley").attr("alt", "Вы победили!"); // Меняем текст
+
+                // Запускаем анимацию салюта
+                for (let i = 0; i < 10; i++) {
+                    setTimeout(() => createFirework(Math.random() * $(window).width(), Math.random() * $(window).height()), i * 100);
+                }
+                // Останавливаем обработку кликов
+                $(document).off("click");
+            }
+        });
+
+        // Изначально запускаем анимацию с начальным интервалом
+        intervalId = setInterval(moveSmiley, 20);
+    </script>
+</body>
+</html>
+
+

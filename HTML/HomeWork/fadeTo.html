@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Эксперимент</title>
+</head>
+<body>
+    <h1><strong>Эксперимент</strong></h1>
+    <script src="/jquery-3.7.1.js"></script>
+    <!-- Поэкспериментируйте с метождом fadeTo. Первый его аргумент -
+      число миллисекунд, как у прочих методов анимации, а второй - число от 0 до 1.
+       Что произойдет, если запустить следующий код:
+       $("h1").fadeTo(2000, 0.5); -->
+    <script>
+        $(document).ready(function(){
+            $("h1").fadeTo(2000, 0.1).fadeTo(2000, 1);
+        });
+    </script>
+</body>
+</html>

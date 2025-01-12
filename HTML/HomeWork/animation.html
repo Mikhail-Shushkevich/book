@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Отложенная анимация</title>
+</head>
+<body>
+    <h1><strong>Отложенная анимация</strong></h1>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <!-- Для задержки анимации можно воспользоваться методом delay. С помощью delay,
+      fadeOut и fadeIn, заставьте какой-нибудь элемент плавно исчезнуть, а затем,
+       через 5 секунд, снова проявиться -->
+    <script>
+        $(function() {
+            $("h1")
+            .delay(1000)
+            .fadeOut(2000)
+            .delay(5000)
+            .fadeIn(2000);
+        });
+        
+    </script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>HELLO WORLD!</h1>
+    <p>IT IS ME!</p>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script>
+        // Затухание
+        $("p").toggle(1000)
+        .toggle(1000)
+        .slideToggle(1000).slideToggle(1000)
+        .fadeToggle(1000).fadeToggle(1000)
+        .fadeTo(1000, 0.5).fadeTo(1000, 1)
+        .fadeOut(1000)
+        .delay(2000)
+        .fadeIn(1000)    
+        .animate({ 
+            opacity: 0.5, 
+            fontSize: "50px"
+        }, 1000)
+        .animate({ 
+            opacity: 1, 
+            fontSize: "20px"
+        }, 1000);       
+        
+        // $("h1").hide(2000).show(2000);
+        // // Сворачивание/разворачивание
+        // $("h1").slideUp(2000).slideDown(2000);
+    </script>
+    <!-- <script>
+      let animation = 5;
+      for (let i = 0; i < animation; i++) {
+        $("h1").hide(1000).show(1000);
+        $("h1").slideUp(1000).slideDown(1000);
+        $("h1").fadeOut(1000).fadeIn(1000).delay(2000);
+      }
+    </script> -->
+    <!-- Вариант с функцией полезен в том случаи, чтобы анимации запускались динамически 
+     в зависимости от какого-то события или данных, например: -->
+    <!-- <script>
+        function animateHeader(iterations) {
+            for (let i = 0; i < iterations; i++) {
+                $("h1")
+                    .slideUp(1000)
+                    .slideDown(1000)
+                    .fadeOut(1000)
+                    .fadeIn(1000)
+                    .delay(2000);
+            }
+        }
+    
+        animateHeader(5); // Запускаем анимацию 5 раз
+    </script> -->
+  </body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mousemove</title>
+</head>
+<body>
+    <h1 id="heading">Hello world!</h1>
+    <script src="/jquery-3.7.1.js"></script>
+    <script>
+        $(document).ready(function() {
+            //   Вызовом $("html").mousemove(обработчик), добавляем обработчик событий .mousemove.
+            //  В данном случаи аргумент-обработчик - это функция целиком. Она начинается после mousemove
+            //  и продолжается до тега "</sсriрt>". Мы используем $("html") чтобы найти элемент html, поэтому
+            // обработчик будет вызван при перемещении мышки в любом месте страницы: функция, которую мы передали
+            // в скобках после mousemove, будет вызываться всякий раз, когда пользователь передвинет мышку.
+            $("html").mousemove(function(event) {
+                $("#heading").offset({
+                    left: event.pageX,
+                    top: event.pageY
+                });
+            });
+        });
+    </script>
+</body>
+</html>

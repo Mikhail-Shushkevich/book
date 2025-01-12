@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jumping Letters</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center; /* Центрируем по горизонтали */
+            align-items: center;    /* Центрируем по вертикали */
+            height: 100vh;          /* Высота экрана */
+            margin: 0;              /* Убираем отступы */
+            background-color: black; /* Фон для красоты */
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        #jump {
+            font-size: 54px;
+            font-family: Arial, sans-serif;
+        }
+
+        #jump span {
+            position: relative;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div id="jump">
+    <strong><em>
+        <span>З</span>
+        <span>а</span>
+        <span>г</span>
+        <span>р</span>
+        <span>у</span>
+        <span>з</span>
+        <span>к</span>
+        <span>а</span>
+        <span>.</span>
+        <span>.</span>
+        <span>.</span>
+    </em></strong>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script>
+        $(document).ready(function () {
+            function jumpWave() {
+                $('#jump span').each(function (index) {
+                    // Задержка зависит от индекса, чтобы анимация шла по порядку
+                    setTimeout(() => {
+                        $(this).animate({ top: '-25px' }, 100)
+                               .animate({ top: '0px' }, 100);
+                    }, index * 100); // Задержка 100 мс между буквами
+                });
+            }
+
+            // Запускаем волну каждые 1 секунду
+            setInterval(jumpWave, 1000);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Анимация элемента</title>
+</head>
+<body>
+    <h1 id="heading">Hello world!</h1>
+    <script src="/jquery-3.7.1.js"></script>
+    <script>
+        // Создаем функцию с единственным аргументом event. При ее вызове
+        //  в аргументе event будет передан обьект, содержащий информацию о событии,
+        //  например о том, в каком месте был сделан клик. 
+        let clickHandler = function (event) {
+            // В коде фугкции-обработчика - мы используем console.log - для вывода свойств pageX и pageY обЪекта event.
+            // Эти свойства хранят x и y - ккординаты события - иными словами, они сообщают, где именно на странице произошел клик.
+            console.log("Click!" + event.pageX + " " + event.pageY);
+        }
+        // Здесь мы активируем обработчик кликов. Код $("h1") находит элемент h1, а вызов $("h1").click(clickHandler); - означает: 
+        // В случае клика по элементу h1 вызови функцию .click(clickHandler) и передай ей обЪект события.
+        // В данном случае обработчик извлекает из обЪекта event информацию об х и у - координатах клика.
+        $(document).ready(function() {
+            $("h1").click(clickHandler);
+        });
+            //  Click!14 45 (клик! координаты х координаты у)
+            //  Click!36 45
+            //  Click!58 42
+            //  Click!69 43
+            //  Click!100 45
+            //  Click!116 43
+            //  Click!129 41
+            //  Click!148 42
+    </script>
+</body>
+</html>
