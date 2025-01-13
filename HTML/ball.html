@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ball</title>
+</head>
+<body>
+<!--Отскакивающий мяч-->
+<canvas id="myCanvas" width="400" height="400"></canvas>
+  <script>
+      let canvas = document.getElementById("myCanvas");
+      let ctx = canvas.getContext("2d");
+
+      let width = canvas.width;
+      let height = canvas.height;
+  //Создадим для нашего мяча js-объект, написав для этого конструктор ball.
+    //Объект будет хранить скорость мяча и направление его движения с помощью двух свойств: xSpeed и ySpeed
+
+    // 1. Первым делом напишем конструктор ball, с помощью которого мы будем создавать мяч:
+
+    // Конструктор довольно простой:
+    let Ball = function () {
+      // он задает начальную позицию мяча
+      this.x = 100;
+      this.y = 100;
+      // горизонтальную и вертикальную скорость
+      this.xSpeed = 5;
+      this.ySpeed = 5;
+    };
+    // 2. Рисуем мяч
+      // Напишем - метод draw для отрисовки мяча. Добавим этот метод к свойству prototype конструктора Ball,
+      // чтобы все объекты, созданные при помощи Ball, могли его использовать.
+      // Сначала идет код функции circle. Затем мы добавили к Ball.prototype новый метод draw.
+      // Этот метод просто-напросто вызывает circle(this.x, this.y, 3, true), рисуя окружность с центром в точке this.x, this.y.
+      // Иными словами в позиции мяча. Радиус окружности - 3 пикселя, а в качестве последнего аргумента, мы передаем true,
+      // чтобы окружность была заполнена.
+    let circle = function (x, y, radius, fillCircle) {
+      ctx.beginPath();
+      ctx.arc(x, y, radius, 0, Math.PI * 2, false);
+      if (fillCircle) {
+        ctx.fill();
+      } else {
+        ctx.stroke();
+      }
+    };
+    Ball.prototype.draw = function () {
+      circle(this.x, this.y, 5, true);
+    };
+
+    // 3. Перемещение мяча
+      //Используем - команду this.x += this.xSpeed, чтобы прибавить значение горизонтальной скорости к this.x.
+      // Аналогично к this.y += this.ySpeed. Например, в самом начале анимации мяч находиться в позиции 100, 100.
+      // this.xSpeed равняется -2, this.xSpeed равняется 3. Метод move при его вызове вычтет 2 из значения х
+      // и прибавит 3 к значению у, в результате чего мяч окажется в позиции (98, 103),
+      // то есть переместиться на 2 пикселя влево и на 3 пикселя вниз.
+    Ball.prototype.move = function () {
+        this.x += this.xSpeed;
+        this.y += this.ySpeed;
+    };
+
+    // 4. Отскок мяча
+      // На каждом шагу надо проверять - не столкнулся ли мяч с границей холста.
+      // Если да - следует обновить свойства xSpeed или ySpeed, инвертировав его значение (т.е., умножив его на -1).
+      // Например, при столкновении с нижней границей мы должны инвертировать this.ySpeed:
+      // если в this.ySpeed находиться значение 3 - его надо поменять на -3. А если в this.ySpeed уже значение -3, то поменять на 3.
+      // Дадим этому методу имя checkCollision (проверка столкновения)
+      // Ball.prototype.checkCollision = function () {
+      //     // Выясняем - не столкнулся ли мяч с левой или правой границей, сравнивая свойство х с 0.
+      //     // Если любая из этих проверок даст true, значит мяч начал выходить за пределы холста и его направление надо инвертировать.
+      //     // Мы делаем это, задавая свойству this.xSpeed значение -this.xSpeed
+      //     if (this.x < 0 || this.x > canvas.width) {
+      //         this.xSpeed = - this.xSpeed;
+      //     }
+      //     if (this.y < 0 || this.y > canvas.height) {
+      //         this.ySpeed = - this.ySpeed;
+      //     }
+      // };
+
+      Ball.prototype.checkCollision = function () {
+    const radius = 5; // Радиус мяча
+
+    // Проверяем столкновения с левой и правой границей
+    if (this.x - radius < 0 || this.x + radius > canvas.width) {
+        this.xSpeed = -this.xSpeed;
+    }
+
+    // Проверяем столкновения с верхней и нижней границей
+    if (this.y - radius < 0 || this.y + radius > canvas.height) {
+        this.ySpeed = -this.ySpeed;
+    }
+};
+
+
+      // 5. Анимация мяча
+        // Теперь можно написать код, отвечающий за анимацию. Этот код создает объект-мяч и с помощью setInterval
+        // вызывает методы отрисовки и обновления позиции мяча на каждом шаге анимации.
+
+      let ball = new Ball();
+
+      setInterval(function () {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+          ball.draw();
+          ball.move();
+          ball.checkCollision();
+
+          ctx.strokeRect(0, 0, canvas.width, canvas.height);
+      }, 30);
+  </script>
+</body>
+</html>

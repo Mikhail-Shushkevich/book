@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Canvas Resize</title>
+</head>
+<body>
+    <!-- Ползунки для изменения ширины и высоты -->
+    <label>
+        Ширина:
+        <input id="widthSlider" type="range" min="100" max="800" value="500">
+    </label>
+    <label>
+        Высота:
+        <input id="heightSlider" type="range" min="100" max="700" value="500">
+    </label>
+
+    <!-- Холст -->
+    <canvas id="myCanvas" width="400" height="400"></canvas>
+
+    <script>
+        let canvas = document.getElementById("myCanvas");
+        let ctx = canvas.getContext("2d");
+
+        // Ползунки
+        let widthSlider = document.getElementById("widthSlider");
+        let heightSlider = document.getElementById("heightSlider");
+
+        // Мяч
+        let Ball = function () {
+            this.x = 100;
+            this.y = 100;
+            this.xSpeed = 2;
+            this.ySpeed = 2;
+        };
+
+        let circle = function (x, y, radius, fillCircle) {
+            ctx.beginPath();
+            ctx.arc(x, y, radius, 0, Math.PI * 2, false);
+            if (fillCircle) {
+                ctx.fill();
+            } else {
+                ctx.stroke();
+            }
+        };
+
+        Ball.prototype.draw = function () {
+            circle(this.x, this.y, 5, true);
+        };
+
+        Ball.prototype.move = function () {
+            this.x += this.xSpeed;
+            this.y += this.ySpeed;
+        };
+
+        Ball.prototype.checkCollision = function () {
+            const radius = 5;
+            if (this.x - radius < 0 || this.x + radius > canvas.width) {
+                this.xSpeed = -this.xSpeed;
+            }
+            if (this.y - radius < 0 || this.y + radius > canvas.height) {
+                this.ySpeed = -this.ySpeed;
+            }
+        };
+
+        let ball = new Ball();
+
+        // Анимация мяча
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            ball.draw();
+            ball.move();
+            ball.checkCollision();
+
+            ctx.strokeRect(0, 0, canvas.width, canvas.height);
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+
+        // Изменение размеров холста
+        function resizeCanvas() {
+            canvas.width = parseInt(widthSlider.value);
+            canvas.height = parseInt(heightSlider.value);
+
+            // Обновление отрисовки рамки
+            ctx.strokeRect(0, 0, canvas.width, canvas.height);
+        }
+
+        // Привязка событий изменения к ползункам
+        widthSlider.addEventListener("input", resizeCanvas);
+        heightSlider.addEventListener("input", resizeCanvas);
+    </script>
+</body>
+</html>
